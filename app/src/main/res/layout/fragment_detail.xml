@@ -45,6 +45,15 @@
         android:layout_below="@+id/dogPurpose"
         android:layout_centerHorizontal="true"/>
 
+    <TextView
+        android:id="@+id/dogLifeSpan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Text"
+        android:layout_margin="4dp"
+        android:text="Dog Lifespan"
+        android:layout_below="@+id/dogTemperament"
+        android:layout_centerHorizontal="true"/>
 
 
 

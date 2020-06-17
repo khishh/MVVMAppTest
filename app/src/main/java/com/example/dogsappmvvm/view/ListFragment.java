@@ -1,4 +1,4 @@
-package com.example.dogsappmvvm;
+package com.example.dogsappmvvm.view;
 
 import android.os.Bundle;
 
@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.dogsappmvvm.R;
 import com.example.dogsappmvvm.model.DogBreed;
 import com.example.dogsappmvvm.view.DogListAdapter;
 import com.example.dogsappmvvm.viewmodel.ListViewModel;
@@ -79,8 +80,16 @@ public class ListFragment extends Fragment {
 
         dogList.setLayoutManager(new LinearLayoutManager(getContext()));
         dogList.setAdapter(dogsListAdapter);
-        observeViewModel();
 
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            dogList.setVisibility(View.GONE);
+            listErrorView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            viewModel.refreshBypassCache();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
+        observeViewModel();
 
     }
 

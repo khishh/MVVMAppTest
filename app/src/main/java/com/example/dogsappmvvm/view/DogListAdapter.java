@@ -1,24 +1,26 @@
 package com.example.dogsappmvvm.view;
 
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dogsappmvvm.R;
 import com.example.dogsappmvvm.model.DogBreed;
+import com.example.dogsappmvvm.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.DogViewHolder> {
 
-    private ArrayList<DogBreed> dogList = new ArrayList<>();
+    private ArrayList<DogBreed> dogList;
 
     public DogListAdapter(ArrayList<DogBreed> dogList){
         this.dogList = dogList;
@@ -44,9 +46,17 @@ public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.DogViewH
         TextView lifespan = holder.itemView.findViewById(R.id.lifeSpan);
 
         // use glide for image
+        Util.loadImages(imageView, dogList.get(position).imageUrl, Util.getCircularProgressDrawable(imageView.getContext()));
 
         name.setText(dogList.get(position).dogBreed);
         lifespan.setText(dogList.get(position).lifeSpan);
+
+        LinearLayout linearLayout = holder.itemView.findViewById(R.id.dog_item_linearLayout);
+        linearLayout.setOnClickListener(v -> {
+            ListFragmentDirections.ActionDetail action = ListFragmentDirections.actionDetail();
+            action.setDogUuId(dogList.get(position).uuid);
+            Navigation.findNavController(linearLayout).navigate(action);
+        });
     }
 
     @Override

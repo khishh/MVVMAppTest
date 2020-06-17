@@ -1,4 +1,4 @@
-package com.example.dogsappmvvm;
+package com.example.dogsappmvvm.view;
 
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.NavigatorProvider;
 import androidx.navigation.ui.NavigationUI;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.dogsappmvvm.R;
 import com.example.dogsappmvvm.model.DogBreed;
+import com.example.dogsappmvvm.util.Util;
 import com.example.dogsappmvvm.viewmodel.DetailViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,21 +77,26 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        detailViewModel.refresh();
+
 
         observeViewModel();
 
         if(getArguments() != null){
+            // get the uuid from ListFragment
             dogUuId = DetailFragmentArgs.fromBundle(getArguments()).getDogUuId();
         }
+
+        detailViewModel.fetch(dogUuId);
 
     }
 
     private void observeViewModel(){
 
         detailViewModel.dog.observe(this, a_dog -> {
-            if(a_dog != null){
-                dogImage.setImageResource(R.mipmap.ic_launcher_round);
+            if(a_dog != null && getContext() != null){
+                if(a_dog.imageUrl != null) {
+                    Util.loadImages(dogImage, a_dog.imageUrl, new CircularProgressDrawable(getContext()));
+                }
                 dogName.setText(a_dog.dogBreed);
                 dogPurpose.setText(a_dog.bredFor);
                 dogTemperament.setText(a_dog.temperament);

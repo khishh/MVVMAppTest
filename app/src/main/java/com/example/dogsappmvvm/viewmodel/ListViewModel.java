@@ -1,7 +1,6 @@
 package com.example.dogsappmvvm.viewmodel;
 
 import android.app.Application;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
